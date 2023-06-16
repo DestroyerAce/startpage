@@ -73,7 +73,7 @@
 				<tr>
 					<td colspan='2'>
 						<div class='flexbox search'>
-							<form onsubmit="return searchDDG()" style='width: 80%;'>
+							<form onsubmit="return searchBrave()" style='width: 80%;'>
 								<input type="text" placeholder="Search..." id='search_box' autocomplete='false'>
 								<button type="submit"><i class="fas fa-search"></i></button>
 							</form>
@@ -101,6 +101,8 @@
 			function startTime() {
 				const today = new Date();
 				let hour = today.getHours();
+        let ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12 || 12;
 				let minute = today.getMinutes();
 				let day = today.getDate();
 				let month = today.getMonth();
@@ -110,7 +112,7 @@
 				let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 				let daySuf = numSuf(day);
 				minute = checkTime(minute);
-				document.getElementById('clock').innerHTML = hour + "<span class='hl'>:</span>" + minute;
+				document.getElementById('clock').innerHTML = hour + "<span class='hl'>:</span>" + minute + " " + ampm;
 				document.getElementById('cal').innerHTML = weekDays[weekDay] + ", " + daySuf + " " + months[month] + " " + year;
 				setTimeout(startTime, 1000);
 
@@ -136,7 +138,7 @@
 				return i;
 			}
 
-			function searchDDG() {
+			function searchBrave() {
 				search_term = document.getElementById('search_box').value;
 				window.location.href = "https://search.brave.com/search?q=" + encodeURI(search_term);
 				return false;
@@ -157,8 +159,8 @@
 							const artist = track.artist["#text"];
 							const song = track.name;
               let nowPlaying = `Now Playing: ${song} by ${artist}`;
-              if (nowPlaying.length > 40) {
-                nowPlaying = nowPlaying.substring(0, 40) + "...";
+              if (nowPlaying.length > 50) {
+                nowPlaying = nowPlaying.substring(0, 50) + "...";
               }
 							document.getElementById("nowPlaying").innerHTML = nowPlaying;
 						} else {
