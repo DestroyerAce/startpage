@@ -5,8 +5,7 @@
 		<meta charset='utf-8'>
 		<link rel='stylesheet' href='catppuccin.css'>
 		<script src="https://kit.fontawesome.com/497f4f4907.js" crossorigin="anonymous"></script>
-	</head>                              
-                                       
+	</head>
 	<body class='flexbox' onload="startTime()">
 		<div class="mainbox">
 			<h1 class='title'>Welcome back, <span class='hl'>Ace</span>.</h1>
@@ -15,7 +14,7 @@
 					<td>
 						<div style='margin-bottom: 64px;'>
 							<h1 id='clock' style='margin: 0px;'></h1>
-							<h2 id='cal' ></h1>
+							<h2 id='cal'></h2>
 						</div>
 						<div class='cat'>
 							&nbsp;／l、<br>
@@ -73,7 +72,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<div class='flexbox search'>	
+						<div class='flexbox search'>
 							<form onsubmit="return searchDDG()" style='width: 80%;'>
 								<input type="text" placeholder="Search..." id='search_box' autocomplete='false'>
 								<button type="submit"><i class="fas fa-search"></i></button>
@@ -91,50 +90,82 @@
 						</div>
 					</td>
 				</tr>
+				<tr>
+					<td colspan='2'>
+						<div id="nowPlaying" style="text-align: center; margin-top: 20px;"></div>
+					</td>
+				</tr>
 			</table>
 		</div>
-			
 		<script>
 			function startTime() {
-			  const today = new Date();
-			  let hour = today.getHours();
-			  let minute = today.getMinutes();
-			  let day = today.getDate();
-			  let month = today.getMonth();
-			  let year = today.getFullYear();
-			  let weekDay = today.getDay();
-			  let weekDays = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ];
-			  let months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-			  let daySuf = numSuf(day);
-			  minute = checkTime(minute);
-			  document.getElementById('clock').innerHTML =  hour + "<span class='hl'>:</span>" + minute;
-			  document.getElementById('cal').innerHTML = weekDays[weekDay] + ", " + daySuf + " " + months[month] + " " + year;
-			  setTimeout(startTime, 1000);
+				const today = new Date();
+				let hour = today.getHours();
+				let minute = today.getMinutes();
+				let day = today.getDate();
+				let month = today.getMonth();
+				let year = today.getFullYear();
+				let weekDay = today.getDay();
+				let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+				let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+				let daySuf = numSuf(day);
+				minute = checkTime(minute);
+				document.getElementById('clock').innerHTML = hour + "<span class='hl'>:</span>" + minute;
+				document.getElementById('cal').innerHTML = weekDays[weekDay] + ", " + daySuf + " " + months[month] + " " + year;
+				setTimeout(startTime, 1000);
+
+				// Fetch the currently playing song from Last.fm API
+				fetchLastFmNowPlaying();
 			}
 
 			function numSuf(i) {
 				if (i > 10 && i < 21) return i + 'th';
 				switch (i % 10) {
-					case 1:  return i + 'st';
-					case 2:  return i + 'nd';
-					case 3:  return i + 'rd';
+					case 1: return i + 'st';
+					case 2: return i + 'nd';
+					case 3: return i + 'rd';
 					default: return i + 'th';
 				}
 			}
-				
+
 			function checkTime(i) {
-				if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+				if (i < 10) {
+					i = "0" + i;
+				}
+				// add zero in front of numbers < 10
 				return i;
 			}
 
 			function searchDDG() {
 				search_term = document.getElementById('search_box').value;
-				window.location.href = "https://duckduckgo.com/?q=" + encodeURI(search_term);
-							
+				window.location.href = "https://search.brave.com/search?q=" + encodeURI(search_term);
 				return false;
 			}
 
+			function fetchLastFmNowPlaying() {
+				// Replace "YOUR_API_KEY" with your actual Last.fm API key
+				const apiKey = "YOUR_API_KEY";
+				// Replace "YOUR_USERNAME" with your Last.fm username
+				const username = "YOUR_USERNAME";
+				const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json&limit=1`;
 
+				fetch(url)
+					.then((response) => response.json())
+					.then((data) => {
+						const track = data.recenttracks.track[0];
+						if (track["@attr"] && track["@attr"].nowplaying === "true") {
+							const artist = track.artist["#text"];
+							const song = track.name;
+							document.getElementById("nowPlaying").innerHTML = `Now Playing: ${song} by ${artist}`;
+						} else {
+							document.getElementById("nowPlaying").innerHTML = "No song currently playing";
+						}
+					})
+					.catch((error) => {
+						console.error("Error fetching Last.fm data:", error);
+					});
+			}
 		</script>
 	</body>
 </html>
+
