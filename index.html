@@ -159,13 +159,13 @@
 						if (track["@attr"] && track["@attr"].nowplaying === "true") {
 							const artist = track.artist["#text"];
 							const song = track.name;
-              let nowPlaying = `Now Playing: ${song} by ${artist}`;
+              let nowPlaying = `${song} by ${artist}`;
               if (nowPlaying.length > 50) {
                 nowPlaying = nowPlaying.substring(0, 50) + "...";
               }
-							document.getElementById("nowPlaying").innerHTML = nowPlaying;
+							document.getElementById("nowPlaying").innerHTML = "🎵 " + nowPlaying + " 🎵";
 						} else {
-							document.getElementById("nowPlaying").innerHTML = "No song currently playing";
+							document.getElementById("nowPlaying").innerHTML = "";
 						}
 					})
 					.catch((error) => {
