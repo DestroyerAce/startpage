@@ -9,68 +9,58 @@
 	</head>
 	<body class='flexbox' onload="startTime()">
 		<div class="mainbox">
+    <table>
+      <tr>
+        <td>
+    <div id="time" class="time"></div>
 			<h1 class='title'>Welcome back, <span class='hl'>Ace</span>.</h1>
-			<table>
-				<tr>
-					<td>
-						<div style='margin-bottom: 64px;'>
-							<h1 id='clock' style='margin: 0px;'></h1>
-							<h2 id='cal'></h2>
-						</div>
+        </td>
+        <td>
 						<div class='cat'>
 							&nbsp;／l、<br>
 							(⠁、.7<br>
 							&nbsp;&nbsp;|、 ~ヽ<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;じしf_,)ノ<br>
 						</div>
-					</td>
-					<td>
-						<nav class='flexbox' style='flex-direction: column;'>
-							<div class='flexbox' style='flex-direction: row; align-items: flex-start; justify-content: space-evenly;'>
-								<div>
-									<b>~/media</b>
-									<ul>
-										<li><a href='https://www.youtube.com/'>/youtube</a></li>
-										<li><a href='https://open.spotify.com/'>/spotify</a></li>
-										<li><a href='http://localhost:8096'>/jellyfin</a></li>
-									</ul>
-								</div>
-								<div>
-									<b>~/reddit</b>
-									<ul>
-										<li><a href='https://www.reddit.com/r/unixporn/'>/unixporn</a></li>
-									</ul>
-								</div>
-								<div>
-									<b>~/dev</b>
-									<ul>
-										<li><a href='https://www.github.com/'>/github</a></li>
-										<li><a href='https://www.stackoverflow.com/'>/stack-overflow</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class='flexbox' style='flex-direction: row; align-items: flex-start; justify-content: space-evenly; width:100%;'>
-								<div>
-									<b>~/school</b>
-									<ul>
-										<li><a href='https://www.gmail.com/'>/gmail</a></li>
-                    <li><a href='https://app.notesnook.com'>/notesnook</a></li>
-                    <li><a href='https://mail.proton.me/u/0/inbox'>/protonmail</a></li>
-                    <li><a href='https://chat.openai.com'>/chatgpt</a></li>
-									</ul>
-								</div>
-								<div>
-									<b>~/misc</b>
-									<ul>
-										<li><a href='https://play.pokemonshowdown.com/'>/showdown</a></li>
-										<li><a href='https://wiki.archlinux.org/'>/archwiki</a></li>
-										<li><a href='https://fosstodon.org/'>/fosstodon</a></li>
-									</ul>
-								</div>
-							</div>
-						</nav>
-					</td>
-				</tr>
+        </td>
+      </tr>
+    </table>
+	  <nav class='flexbox' style='flex-direction: column;'>
+			<div class='flexbox' style='flex-direction: row; align-items: flex-start; justify-content: space-evenly; width: 100%'>
+			  <div>
+					<b>~/media</b>
+						<ul>
+							<li><a href='https://www.youtube.com/'>/youtube</a></li>
+							<li><a href='https://open.spotify.com/'>/spotify</a></li>
+							<li><a href='http://localhost:8096'>/jellyfin</a></li>
+							</ul>
+					</div>
+				<div>
+					<b>~/dev</b>
+					<ul>
+						<li><a href='https://www.github.com/'>/github</a></li>
+						<li><a href='https://www.stackoverflow.com/'>/stack-overflow</a></li>
+					</ul>
+				</div>
+					<div>
+						<b>~/school</b>
+						<ul>
+							<li><a href='https://www.gmail.com/'>/gmail</a></li>
+              <li><a href='https://app.notesnook.com'>/notesnook</a></li>
+              <li><a href='https://mail.proton.me/u/0/inbox'>/protonmail</a></li>
+              <li><a href='https://chat.openai.com'>/chatgpt</a></li>
+						</ul>
+					</div>
+					<div>
+						<b>~/misc</b>
+						<ul>
+						<li><a href='https://play.pokemonshowdown.com/'>/showdown</a></li>
+						<li><a href='https://wiki.archlinux.org/'>/archwiki</a></li>
+						<li><a href='https://fosstodon.org/'>/fosstodon</a></li>
+					</ul>
+				</div>
+				</div>
+		</nav>
 				<tr>
 					<td colspan='2'>
 						<div id="nowPlaying" style="text-align: center; margin-top: 20px;"></div>
@@ -95,8 +85,7 @@
 							<div class='colcir' style='background-color:var(--fg);     '></div>
 						</div>
 					</td>
-				</tr>
-			</table>
+
 		</div>
 		<script>
 			function startTime() {
@@ -172,6 +161,20 @@
 						console.error("Error fetching Last.fm data:", error);
 					});
 			}
+      function updateClock() {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let ampm = hours >= 12 ? "pm" : "am";
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        let time = hours + ":" + minutes + " " + ampm;
+        document.getElementById("time").innerHTML = time;
+        setTimeout(updateClock, 1000);
+      }
+
+      updateClock();
 		</script>
 	</body>
 </html>
